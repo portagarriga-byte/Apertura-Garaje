@@ -85,6 +85,7 @@
   <div class="seccion-log" id="secLog" style="display:none">
     <h2>ACCESOS RECIENTES</h2>
     <button class="btn-log" onclick="pedirLog()">↻ Actualizar</button>
+    <button class="btn-log" style="color:#e94560;border-color:#e94560;margin-top:6px" onclick="borrarLog()">✕ Borrar registros</button>
     <div id="listaLog"><p class="log-vacio">Cargando...</p></div>
   </div>
 </div>
@@ -153,11 +154,24 @@
     lista.innerHTML = html;
   }
 
+  var timerLog = null;
   function pedirLog() {
-    if (client && client.connected) {
-      document.getElementById("listaLog").innerHTML = '<p class="log-vacio">Cargando...</p>';
-      client.publish("garaje2/pedir_log", "1");
-    }
+    if (!client || !client.connected) return;
+    document.getElementById("listaLog").innerHTML = '<p class="log-vacio">Cargando...</p>';
+    client.publish("garaje2/pedir_log", "1");
+    if (timerLog) clearTimeout(timerLog);
+    timerLog = setTimeout(function() {
+      var lista = document.getElementById("listaLog");
+      if (lista.innerHTML.indexOf("Cargando") !== -1) {
+        lista.innerHTML = '<p class="log-vacio">Sin respuesta — prueba de nuevo</p>';
+      }
+    }, 5000);
+  }
+
+  function borrarLog() {
+    if (!client || !client.connected) return;
+    if (!confirm('¿Borrar todos los registros de acceso?')) return;
+    client.publish("garaje2/borrar_log", "1");
   }
 
   function conectar() {
@@ -222,6 +236,7 @@
       }
 
       if (topic === "garaje2/log") {
+        if (timerLog) { clearTimeout(timerLog); timerLog = null; }
         try {
           var datos = JSON.parse(msg);
           renderLog(datos);
