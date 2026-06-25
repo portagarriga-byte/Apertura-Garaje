@@ -82,6 +82,16 @@
     </div>
   </div>
 
+  <div class="seccion-log" id="secNombres" style="display:none">
+    <h2>NOMBRES DE BALIZAS</h2>
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <input id="inputMinor" type="number" placeholder="Minor" style="width:80px;padding:6px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:12px">
+      <input id="inputNombre" type="text" placeholder="Nombre" style="flex:1;padding:6px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:12px">
+      <button class="btn-log" style="width:auto;padding:6px 12px" onclick="guardarNombre()">Añadir</button>
+    </div>
+    <div id="listaNombres"><p class="log-vacio">Cargando...</p></div>
+  </div>
+
   <div class="seccion-log" id="secLog" style="display:none">
     <h2>ACCESOS RECIENTES</h2>
     <button class="btn-log" onclick="pedirLog()">↻ Actualizar</button>
@@ -174,6 +184,48 @@
     client.publish("garaje2/borrar_log", "1");
   }
 
+  function renderNombres(datos) {
+    var lista = document.getElementById("listaNombres");
+    if (!lista) return;
+    if (!datos || datos.length === 0) {
+      lista.innerHTML = '<p class="log-vacio">Sin nombres configurados</p>';
+      return;
+    }
+    var html = "";
+    for (var i = 0; i < datos.length; i++) {
+      html += '<div class="log-item log-admin" style="justify-content:space-between">';
+      html += '<span class="log-hora">Minor ' + datos[i].m + '</span>';
+      html += '<span class="log-tipo">' + datos[i].n + '</span>';
+      html += '<button class="btn-copiar" style="padding:4px 10px;font-size:11px" onclick="borrarNombre(' + datos[i].m + ')">✕</button>';
+      html += '</div>';
+    }
+    lista.innerHTML = html;
+  }
+
+  function pedirNombres() {
+    if (client && client.connected) client.publish("garaje2/pedir_nombres", "1");
+  }
+
+  function guardarNombre() {
+    var minor = document.getElementById("inputMinor").value.trim();
+    var nombre = document.getElementById("inputNombre").value.trim();
+    if (!minor || !nombre) return;
+    if (client && client.connected) {
+      client.publish("garaje2/nuevo_nombre", minor + ":" + nombre);
+      document.getElementById("inputMinor").value = "";
+      document.getElementById("inputNombre").value = "";
+      setTimeout(pedirNombres, 500);
+    }
+  }
+
+  function borrarNombre(minor) {
+    if (!confirm("¿Borrar nombre del Minor " + minor + "?")) return;
+    if (client && client.connected) {
+      client.publish("garaje2/borrar_nombre", String(minor));
+      setTimeout(pedirNombres, 500);
+    }
+  }
+
   function conectar() {
     setEstado("conectando");
     var clientId = "web_garaje_" + Math.random().toString(16).substr(2, 8);
@@ -187,7 +239,8 @@
       client.subscribe("garaje2/tiempo_token");
       client.subscribe("garaje2/puerta");
       client.subscribe("garaje2/log");
-      if (!modoInvitado) pedirLog();
+      client.subscribe("garaje2/nombres_ok");
+      if (!modoInvitado) { pedirLog(); pedirNombres(); }
       if (modoInvitado) client.publish("garaje2/consulta_token", tokenInvitado);
     });
 
@@ -233,6 +286,13 @@
         document.getElementById("enlaceGenerado").style.display = "block";
         document.getElementById("btnCopiar").textContent = "Copiar enlace";
         document.getElementById("btnCopiar").className   = "btn-copiar";
+      }
+
+      if (topic === "garaje2/nombres_ok") {
+        try {
+          var datos = JSON.parse(msg);
+          renderNombres(datos);
+        } catch(e) {}
       }
 
       if (topic === "garaje2/log") {
