@@ -82,22 +82,29 @@
     </div>
   </div>
 
-  <div class="seccion-log" id="secNombres" style="display:none">
-    <h2>NOMBRES DE BALIZAS</h2>
-    <div style="display:flex;gap:8px;margin-bottom:10px">
-      <input id="inputMinor" type="number" placeholder="Minor" style="width:80px;padding:6px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:12px">
-      <input id="inputNombre" type="text" placeholder="Nombre" style="flex:1;padding:6px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:12px">
-      <button class="btn-log" style="width:auto;padding:6px 12px" onclick="guardarNombre()">Añadir</button>
-    </div>
-    <div id="listaNombres"><p class="log-vacio">Cargando...</p></div>
-  </div>
-
   <div class="seccion-log" id="secLog" style="display:none">
     <h2>ACCESOS RECIENTES</h2>
     <button class="btn-log" onclick="pedirLog()">↻ Actualizar</button>
     <button class="btn-log" style="color:#e94560;border-color:#e94560;margin-top:6px" onclick="borrarLog()">✕ Borrar registros</button>
     <div id="listaLog"><p class="log-vacio">Cargando...</p></div>
   </div>
+  <div id="btnConfigWrap" style="display:none;text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid #2a2a4a">
+    <button onclick="mostrarNombres()" style="background:transparent;color:#555;border:none;font-size:13px;cursor:pointer;letter-spacing:1px">⚙ Gestión de balizas</button>
+  </div>
+</div>
+
+<!-- ── Vista gestión de nombres ── -->
+<div id="vistaConfig" style="display:none" class="container">
+  <div style="display:flex;align-items:center;margin-bottom:20px">
+    <button onclick="volverPrincipal()" style="background:transparent;color:#4ecca3;border:none;font-size:20px;cursor:pointer;margin-right:10px">←</button>
+    <h1 style="font-size:18px;letter-spacing:2px">BALIZAS</h1>
+  </div>
+  <div style="display:flex;gap:8px;margin-bottom:16px">
+    <input id="inputMinor" type="number" placeholder="Minor" style="width:80px;padding:8px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:13px">
+    <input id="inputNombre" type="text" placeholder="Nombre" style="flex:1;padding:8px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:13px">
+    <button class="btn-log" style="width:auto;padding:8px 14px;margin:0" onclick="guardarNombre()">Añadir</button>
+  </div>
+  <div id="listaNombres"><p class="log-vacio">Cargando...</p></div>
 </div>
 
 <script>
@@ -226,6 +233,17 @@
     }
   }
 
+  function mostrarNombres() {
+    document.getElementById("vistaConfig").style.display = "block";
+    document.querySelector(".container").style.display   = "none";
+    pedirNombres();
+  }
+
+  function volverPrincipal() {
+    document.getElementById("vistaConfig").style.display = "none";
+    document.querySelector(".container").style.display   = "block";
+  }
+
   function conectar() {
     setEstado("conectando");
     var clientId = "web_garaje_" + Math.random().toString(16).substr(2, 8);
@@ -347,7 +365,7 @@
     } else {
       document.getElementById("secInvitar").style.display = "block";
       document.getElementById("secLog").style.display     = "block";
-      document.getElementById("secNombres").style.display  = "block";
+      document.getElementById("btnConfigWrap").style.display = "block";
     }
     conectar();
   };
