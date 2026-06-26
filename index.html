@@ -63,7 +63,7 @@
   </style>
 </head>
 <body>
-<div class="container">
+<div class="container" id="vistaPrincipal">
   <h1>ENTRADA</h1>
   <div class="subtitulo" id="subtitulo"></div>
   <div class="estado-mqtt desconectado" id="estadoMqtt">● Desconectado</div>
@@ -242,25 +242,25 @@
   }
 
   function mostrarLog() {
-    document.querySelector(".container").style.display = "none";
+    document.getElementById("vistaPrincipal").style.display = "none";
     document.getElementById("vistaLog").style.display  = "block";
     pedirLog();
   }
 
   function volverDesdeLog() {
     document.getElementById("vistaLog").style.display  = "none";
-    document.querySelector(".container").style.display = "block";
+    document.getElementById("vistaPrincipal").style.display = "block";
   }
 
   function mostrarNombres() {
     document.getElementById("vistaConfig").style.display = "block";
-    document.querySelector(".container").style.display   = "none";
+    document.getElementById("vistaPrincipal").style.display   = "none";
     pedirNombres();
   }
 
   function volverPrincipal() {
     document.getElementById("vistaConfig").style.display = "none";
-    document.querySelector(".container").style.display   = "block";
+    document.getElementById("vistaPrincipal").style.display   = "block";
   }
 
   function conectar() {
@@ -383,7 +383,6 @@
       document.getElementById("subtitulo").textContent = "Acceso de invitado";
     } else {
       document.getElementById("secInvitar").style.display = "block";
-      document.getElementById("secLog").style.display     = "block";
       document.getElementById("btnConfigWrap").style.display = "block";
     }
     conectar();
