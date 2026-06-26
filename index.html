@@ -82,11 +82,8 @@
     </div>
   </div>
 
-  <div class="seccion-log" id="secLog" style="display:none">
-    <h2>ACCESOS RECIENTES</h2>
-    <button class="btn-log" onclick="pedirLog()">↻ Actualizar</button>
-    <button class="btn-log" style="color:#e94560;border-color:#e94560;margin-top:6px" onclick="borrarLog()">✕ Borrar registros</button>
-    <div id="listaLog"><p class="log-vacio">Cargando...</p></div>
+  <div id="btnLogWrap" style="display:none;text-align:center;margin-top:10px">
+    <button onclick="mostrarLog()" style="background:transparent;color:#4ecca3;border:1px solid #4ecca3;border-radius:8px;font-size:16px;cursor:pointer;letter-spacing:1px;padding:10px 24px;width:100%">☰&nbsp; Accesos recientes</button>
   </div>
   <div id="btnConfigWrap" style="display:none;text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid #2a2a4a">
     <button onclick="mostrarNombres()" style="background:transparent;color:#4ecca3;border:1px solid #4ecca3;border-radius:8px;font-size:16px;cursor:pointer;letter-spacing:1px;padding:10px 24px;width:100%">⚙&nbsp; Gestión de balizas</button>
@@ -96,7 +93,7 @@
 <!-- ── Vista gestión de nombres ── -->
 <div id="vistaConfig" style="display:none" class="container">
   <div style="display:flex;align-items:center;margin-bottom:20px">
-    <button onclick="volverPrincipal()" style="background:transparent;color:#4ecca3;border:none;font-size:20px;cursor:pointer;margin-right:10px">←</button>
+    <button onclick="volverPrincipal()" style="background:transparent;color:#4ecca3;border:none;font-size:32px;cursor:pointer;margin-right:10px;line-height:1;padding:0">←</button>
     <h1 style="font-size:18px;letter-spacing:2px">BALIZAS</h1>
   </div>
   <div style="display:flex;gap:8px;margin-bottom:16px">
@@ -105,6 +102,17 @@
     <button class="btn-log" style="width:auto;padding:8px 14px;margin:0" onclick="guardarNombre()">Añadir</button>
   </div>
   <div id="listaNombres"><p class="log-vacio">Cargando...</p></div>
+</div>
+
+<!-- ── Vista registros ── -->
+<div id="vistaLog" style="display:none" class="container">
+  <div style="display:flex;align-items:center;margin-bottom:20px">
+    <button onclick="volverDesdeLog()" style="background:transparent;color:#4ecca3;border:none;font-size:32px;cursor:pointer;margin-right:10px;line-height:1;padding:0">←</button>
+    <h1 style="font-size:18px;letter-spacing:2px">ACCESOS RECIENTES</h1>
+  </div>
+  <button class="btn-log" onclick="pedirLog()">↻ Actualizar</button>
+  <button class="btn-log" style="color:#e94560;border-color:#e94560;margin-top:6px" onclick="borrarLog()">✕ Borrar registros</button>
+  <div id="listaLog" style="margin-top:12px"><p class="log-vacio">Cargando...</p></div>
 </div>
 
 <script>
@@ -231,6 +239,17 @@
       client.publish("garaje2/borrar_nombre", String(minor));
       setTimeout(pedirNombres, 500);
     }
+  }
+
+  function mostrarLog() {
+    document.querySelector(".container").style.display = "none";
+    document.getElementById("vistaLog").style.display  = "block";
+    pedirLog();
+  }
+
+  function volverDesdeLog() {
+    document.getElementById("vistaLog").style.display  = "none";
+    document.querySelector(".container").style.display = "block";
   }
 
   function mostrarNombres() {
