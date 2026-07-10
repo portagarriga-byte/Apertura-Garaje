@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Garaje</title>
+  <title>Garatge</title>
   <script src="https://cdn.jsdelivr.net/npm/mqtt/dist/mqtt.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,29 +64,29 @@
 </head>
 <body>
 <div class="container" id="vistaPrincipal">
-  <h1>ENTRADA</h1>
+  <h1>ENTRADA IL·LUSIÓ</h1>
   <div class="subtitulo" id="subtitulo"></div>
-  <div class="estado-mqtt desconectado" id="estadoMqtt">● Desconectado</div>
+  <div class="estado-mqtt desconectado" id="estadoMqtt">● Desconnectat</div>
   <div id="tokenBadge"></div>
   <div class="puerta-estado puerta-unknown" id="puertaEstado"></div>
   <button class="btn-abrir" id="btnAbrir" onclick="abrir()" disabled>ABRIR</button>
   <div class="status" id="status"></div>
 
   <div class="seccion-invitar" id="secInvitar" style="display:none">
-    <h2>INVITAR</h2>
-    <button class="btn-inv" id="btnGenerar" onclick="generarEnlace()" disabled>Generar enlace (1h)</button>
+    <h2>CONVIDAR</h2>
+    <button class="btn-inv" id="btnGenerar" onclick="generarEnlace()" disabled>Generar enllaç (1h)</button>
     <div class="enlace-generado" id="enlaceGenerado">
       <div class="enlace-token" id="tokenGenerado"></div>
       <div class="enlace-url" id="urlGenerada"></div>
-      <button class="btn-copiar" id="btnCopiar" onclick="copiarEnlace()">Copiar enlace</button>
+      <button class="btn-copiar" id="btnCopiar" onclick="copiarEnlace()">Copiar enllaç</button>
     </div>
   </div>
 
   <div id="btnLogWrap" style="display:none;text-align:center;margin-top:10px">
-    <button onclick="mostrarLog()" style="background:transparent;color:#4ecca3;border:1px solid #4ecca3;border-radius:8px;font-size:16px;cursor:pointer;letter-spacing:1px;padding:10px 24px;width:100%">☰&nbsp; Accesos recientes</button>
+    <button onclick="mostrarLog()" style="background:transparent;color:#4ecca3;border:1px solid #4ecca3;border-radius:8px;font-size:16px;cursor:pointer;letter-spacing:1px;padding:10px 24px;width:100%">☰&nbsp; Accessos recents</button>
   </div>
   <div id="btnConfigWrap" style="display:none;text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid #2a2a4a">
-    <button onclick="mostrarNombres()" style="background:transparent;color:#4ecca3;border:1px solid #4ecca3;border-radius:8px;font-size:16px;cursor:pointer;letter-spacing:1px;padding:10px 24px;width:100%">⚙&nbsp; Gestión de balizas</button>
+    <button onclick="mostrarNoms()" style="background:transparent;color:#4ecca3;border:1px solid #4ecca3;border-radius:8px;font-size:16px;cursor:pointer;letter-spacing:1px;padding:10px 24px;width:100%">⚙&nbsp; Gestió de balisses</button>
   </div>
 </div>
 
@@ -94,25 +94,25 @@
 <div id="vistaConfig" style="display:none" class="container">
   <div style="display:flex;align-items:center;margin-bottom:20px">
     <button onclick="volverPrincipal()" style="background:transparent;color:#4ecca3;border:none;font-size:32px;cursor:pointer;margin-right:10px;line-height:1;padding:0">←</button>
-    <h1 style="font-size:18px;letter-spacing:2px">BALIZAS</h1>
+    <h1 style="font-size:18px;letter-spacing:2px">BALISSES</h1>
   </div>
   <div style="display:flex;gap:8px;margin-bottom:16px">
     <input id="inputMinor" type="number" placeholder="Minor" style="width:80px;padding:8px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:13px">
-    <input id="inputNombre" type="text" placeholder="Nombre" style="flex:1;padding:8px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:13px">
-    <button class="btn-log" style="width:auto;padding:8px 14px;margin:0" onclick="guardarNombre()">Añadir</button>
+    <input id="inputNom" type="text" placeholder="Nom" style="flex:1;padding:8px;border-radius:6px;border:1px solid #2e6da4;background:#0a2040;color:#eee;font-size:13px">
+    <button class="btn-log" style="width:auto;padding:8px 14px;margin:0" onclick="guardarNom()">Afegir</button>
   </div>
-  <div id="listaNombres"><p class="log-vacio">Cargando...</p></div>
+  <div id="listaNoms"><p class="log-vacio">Carregant...</p></div>
 </div>
 
 <!-- ── Vista registros ── -->
 <div id="vistaLog" style="display:none" class="container">
   <div style="display:flex;align-items:center;margin-bottom:20px">
     <button onclick="volverDesdeLog()" style="background:transparent;color:#4ecca3;border:none;font-size:32px;cursor:pointer;margin-right:10px;line-height:1;padding:0">←</button>
-    <h1 style="font-size:18px;letter-spacing:2px">ACCESOS RECIENTES</h1>
+    <h1 style="font-size:18px;letter-spacing:2px">ACCESSOS RECENTS</h1>
   </div>
-  <button class="btn-log" onclick="pedirLog()">↻ Actualizar</button>
-  <button class="btn-log" style="color:#e94560;border-color:#e94560;margin-top:6px" onclick="borrarLog()">✕ Borrar registros</button>
-  <div id="listaLog" style="margin-top:12px"><p class="log-vacio">Cargando...</p></div>
+  <button class="btn-log" onclick="pedirLog()">↻ Actualitzar</button>
+  <button class="btn-log" style="color:#e94560;border-color:#e94560;margin-top:6px" onclick="borrarLog()">✕ Esborrar registres</button>
+  <div id="listaLog" style="margin-top:12px"><p class="log-vacio">Carregant...</p></div>
 </div>
 
 <script>
@@ -137,14 +137,14 @@
     var btn = document.getElementById("btnAbrir");
     var btnGen = document.getElementById("btnGenerar");
     if (s === "conectado") {
-      el.textContent = "● Conectado"; el.className = "estado-mqtt conectado";
+      el.textContent = "● Connectat"; el.className = "estado-mqtt conectado";
       btn.disabled = false;
       if (!modoInvitado && btnGen) btnGen.disabled = false;
     } else if (s === "conectando") {
-      el.textContent = "● Conectando..."; el.className = "estado-mqtt conectando";
+      el.textContent = "● Connectant..."; el.className = "estado-mqtt conectando";
       btn.disabled = true;
     } else {
-      el.textContent = "● Desconectado"; el.className = "estado-mqtt desconectado";
+      el.textContent = "● Desconnectat"; el.className = "estado-mqtt desconectado";
       btn.disabled = true;
       if (btnGen) btnGen.disabled = true;
     }
@@ -164,7 +164,7 @@
   function renderLog(datos) {
     var lista = document.getElementById("listaLog");
     if (!datos || datos.length === 0) {
-      lista.innerHTML = '<p class="log-vacio">Sin accesos registrados</p>';
+      lista.innerHTML = '<p class="log-vacio">Sense accessos registrats</p>';
       return;
     }
     var html = "";
@@ -182,28 +182,28 @@
   var timerLog = null;
   function pedirLog() {
     if (!client || !client.connected) return;
-    document.getElementById("listaLog").innerHTML = '<p class="log-vacio">Cargando...</p>';
+    document.getElementById("listaLog").innerHTML = '<p class="log-vacio">Carregant...</p>';
     client.publish("garaje2/pedir_log", "1");
     if (timerLog) clearTimeout(timerLog);
     timerLog = setTimeout(function() {
       var lista = document.getElementById("listaLog");
       if (lista.innerHTML.indexOf("Cargando") !== -1) {
-        lista.innerHTML = '<p class="log-vacio">Sin respuesta — prueba de nuevo</p>';
+        lista.innerHTML = '<p class="log-vacio">Sense resposta — prueba de nuevo</p>';
       }
     }, 5000);
   }
 
   function borrarLog() {
     if (!client || !client.connected) return;
-    if (!confirm('¿Borrar todos los registros de acceso?')) return;
+    if (!confirm("Esborrar tots els registres d'accés?")) return;
     client.publish("garaje2/borrar_log", "1");
   }
 
-  function renderNombres(datos) {
-    var lista = document.getElementById("listaNombres");
+  function renderNoms(datos) {
+    var lista = document.getElementById("listaNoms");
     if (!lista) return;
     if (!datos || datos.length === 0) {
-      lista.innerHTML = '<p class="log-vacio">Sin nombres configurados</p>';
+      lista.innerHTML = '<p class="log-vacio">Sense noms configurats</p>';
       return;
     }
     var html = "";
@@ -211,33 +211,33 @@
       html += '<div class="log-item log-admin" style="justify-content:space-between">';
       html += '<span class="log-hora">Minor ' + datos[i].m + '</span>';
       html += '<span class="log-tipo">' + datos[i].n + '</span>';
-      html += '<button class="btn-copiar" style="padding:4px 10px;font-size:11px" onclick="borrarNombre(' + datos[i].m + ')">✕</button>';
+      html += '<button class="btn-copiar" style="padding:4px 10px;font-size:11px" onclick="borrarNom(' + datos[i].m + ')">✕</button>';
       html += '</div>';
     }
     lista.innerHTML = html;
   }
 
-  function pedirNombres() {
+  function pedirNoms() {
     if (client && client.connected) client.publish("garaje2/pedir_nombres", "1");
   }
 
-  function guardarNombre() {
+  function guardarNom() {
     var minor = document.getElementById("inputMinor").value.trim();
-    var nombre = document.getElementById("inputNombre").value.trim();
+    var nombre = document.getElementById("inputNom").value.trim();
     if (!minor || !nombre) return;
     if (client && client.connected) {
       client.publish("garaje2/nuevo_nombre", minor + ":" + nombre);
       document.getElementById("inputMinor").value = "";
-      document.getElementById("inputNombre").value = "";
-      setTimeout(pedirNombres, 500);
+      document.getElementById("inputNom").value = "";
+      setTimeout(pedirNoms, 500);
     }
   }
 
-  function borrarNombre(minor) {
-    if (!confirm("¿Borrar nombre del Minor " + minor + "?")) return;
+  function borrarNom(minor) {
+    if (!confirm("Esborrar el nom del Minor " + minor + "?")) return;
     if (client && client.connected) {
       client.publish("garaje2/borrar_nombre", String(minor));
-      setTimeout(pedirNombres, 500);
+      setTimeout(pedirNoms, 500);
     }
   }
 
@@ -252,10 +252,10 @@
     document.getElementById("vistaPrincipal").style.display = "block";
   }
 
-  function mostrarNombres() {
+  function mostrarNoms() {
     document.getElementById("vistaConfig").style.display = "block";
     document.getElementById("vistaPrincipal").style.display   = "none";
-    pedirNombres();
+    pedirNoms();
   }
 
   function volverPrincipal() {
@@ -277,7 +277,7 @@
       client.subscribe("garaje2/puerta");
       client.subscribe("garaje2/log");
       client.subscribe("garaje2/nombres_ok");
-      if (!modoInvitado) { pedirLog(); pedirNombres(); }
+      if (!modoInvitado) { pedirLog(); pedirNoms(); }
       if (modoInvitado) client.publish("garaje2/consulta_token", tokenInvitado);
     });
 
@@ -290,13 +290,13 @@
 
       if (topic === "garaje2/puerta") {
         var el = document.getElementById("puertaEstado");
-        if (msg === "abierta") { el.textContent = "▲ Puerta abierta"; el.className = "puerta-estado puerta-abierta"; }
-        else                   { el.textContent = "▼ Puerta cerrada"; el.className = "puerta-estado puerta-cerrada"; }
+        if (msg === "abierta") { el.textContent = "▲ Porta oberta"; el.className = "puerta-estado puerta-abierta"; }
+        else                   { el.textContent = "▼ Porta tancada"; el.className = "puerta-estado puerta-cerrada"; }
       }
 
       if (topic === "garaje2/confirmacion" && msg === "1") {
         statusBloqueado = true;
-        mostrarStatus("✓ Puerta abierta confirmada", "confirm");
+        mostrarStatus("✓ Porta oberta confirmada", "confirm");
         setTimeout(function() { statusBloqueado = false; document.getElementById("status").className = "status"; setTimeout(function() { document.getElementById("status").textContent = ""; }, 400); }, 5000);
       }
 
@@ -304,31 +304,31 @@
         btn.disabled = false;
         if (msg === "1") {
           btn.classList.remove("error"); btn.classList.add("abierto"); btn.textContent = "✓";
-          if (!statusBloqueado) mostrarStatus("✓ Acceso concedido", "ok");
+          if (!statusBloqueado) mostrarStatus("✓ Accés concedit", "ok");
           setTimeout(function() { btn.classList.remove("abierto"); btn.textContent = "ABRIR"; if (!statusBloqueado) { document.getElementById("status").className = "status"; setTimeout(function() { document.getElementById("status").textContent = ""; }, 400); } }, 3000);
         } else {
           btn.classList.add("error"); btn.textContent = "✗";
-          if (!statusBloqueado) mostrarStatus("Token inválido o caducado", "err");
+          if (!statusBloqueado) mostrarStatus("Token invàlid o caducat", "err");
           setTimeout(function() { btn.classList.remove("error"); btn.textContent = "ABRIR"; }, 4000);
         }
       }
 
       if (topic === "garaje2/token_generado") {
         var btnGen = document.getElementById("btnGenerar");
-        btnGen.disabled = false; btnGen.textContent = "Generar enlace (1h)";
-        if (msg === "ERROR") { mostrarStatus("Error: sin espacio para más tokens", "err"); return; }
+        btnGen.disabled = false; btnGen.textContent = "Generar enllaç (1h)";
+        if (msg === "ERROR") { mostrarStatus("Error: sense espai per a més tokens", "err"); return; }
         urlActual = BASE_URL + msg;
         document.getElementById("tokenGenerado").textContent = msg;
         document.getElementById("urlGenerada").textContent   = urlActual;
         document.getElementById("enlaceGenerado").style.display = "block";
-        document.getElementById("btnCopiar").textContent = "Copiar enlace";
+        document.getElementById("btnCopiar").textContent = "Copiar enllaç";
         document.getElementById("btnCopiar").className   = "btn-copiar";
       }
 
       if (topic === "garaje2/nombres_ok") {
         try {
           var datos = JSON.parse(msg);
-          renderNombres(datos);
+          renderNoms(datos);
         } catch(e) {}
       }
 
@@ -348,7 +348,7 @@
     if (!client || !client.connected) return;
     var btn = document.getElementById("btnAbrir");
     btn.disabled = true; btn.textContent = "...";
-    if (!statusBloqueado) mostrarStatus(modoInvitado ? "Validando acceso..." : "Enviando orden...", "ok");
+    if (!statusBloqueado) mostrarStatus(modoInvitado ? "Validant accés..." : "Enviant ordre...", "ok");
     if (modoInvitado) {
       client.publish("garaje2/invitado", tokenInvitado);
     } else {
@@ -364,7 +364,7 @@
   function generarEnlace() {
     if (!client || !client.connected) return;
     var btnGen = document.getElementById("btnGenerar");
-    btnGen.disabled = true; btnGen.textContent = "Generando...";
+    btnGen.disabled = true; btnGen.textContent = "Generant...";
     document.getElementById("enlaceGenerado").style.display = "none";
     client.publish("garaje2/nuevo_token", "1");
   }
@@ -372,7 +372,7 @@
   function copiarEnlace() {
     navigator.clipboard.writeText(urlActual).then(function() {
       var btn = document.getElementById("btnCopiar");
-      btn.textContent = "✓ Copiado"; btn.className = "btn-copiar copiado";
+      btn.textContent = "✓ Copiat"; btn.className = "btn-copiar copiado";
     });
   }
 
@@ -380,7 +380,7 @@
     tokenInvitado = getToken();
     if (tokenInvitado) {
       modoInvitado = true;
-      document.getElementById("subtitulo").textContent = "Acceso de invitado";
+      document.getElementById("subtitulo").textContent = "Accés de convidat";
     } else {
       document.getElementById("secInvitar").style.display  = "block";
       document.getElementById("btnLogWrap").style.display    = "block";
