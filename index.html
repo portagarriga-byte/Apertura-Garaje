@@ -69,7 +69,7 @@
   <div class="estado-mqtt desconectado" id="estadoMqtt">● Desconnectat</div>
   <div id="tokenBadge"></div>
   <div class="puerta-estado puerta-unknown" id="puertaEstado"></div>
-  <button class="btn-abrir" id="btnAbrir" onclick="abrir()" disabled>ABRIR</button>
+  <button class="btn-abrir" id="btnAbrir" onclick="obrir()" disabled>ABRIR</button>
   <div class="status" id="status"></div>
 
   <div class="seccion-invitar" id="secInvitar" style="display:none">
@@ -305,11 +305,11 @@
         if (msg === "1") {
           btn.classList.remove("error"); btn.classList.add("abierto"); btn.textContent = "✓";
           if (!statusBloqueado) mostrarStatus("✓ Accés concedit", "ok");
-          setTimeout(function() { btn.classList.remove("abierto"); btn.textContent = "ABRIR"; if (!statusBloqueado) { document.getElementById("status").className = "status"; setTimeout(function() { document.getElementById("status").textContent = ""; }, 400); } }, 3000);
+          setTimeout(function() { btn.classList.remove("abierto"); btn.textContent = "OBRIR"; if (!statusBloqueado) { document.getElementById("status").className = "status"; setTimeout(function() { document.getElementById("status").textContent = ""; }, 400); } }, 3000);
         } else {
           btn.classList.add("error"); btn.textContent = "✗";
           if (!statusBloqueado) mostrarStatus("Token invàlid o caducat", "err");
-          setTimeout(function() { btn.classList.remove("error"); btn.textContent = "ABRIR"; }, 4000);
+          setTimeout(function() { btn.classList.remove("error"); btn.textContent = "OBRIR"; }, 4000);
         }
       }
 
@@ -355,7 +355,7 @@
       client.publish("garaje2/abrir", "1");
       btn.classList.add("abierto"); btn.textContent = "✓";
       setTimeout(function() {
-        btn.disabled = false; btn.classList.remove("abierto"); btn.textContent = "ABRIR";
+        btn.disabled = false; btn.classList.remove("abierto"); btn.textContent = "OBRIR";
         if (!statusBloqueado) { document.getElementById("status").className = "status"; setTimeout(function() { document.getElementById("status").textContent = ""; }, 400); }
       }, 3000);
     }
